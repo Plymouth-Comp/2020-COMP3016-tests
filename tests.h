@@ -115,5 +115,5 @@ TEST_CASE("10: Trying to get a node attribute from a simple dae file") {
     comparison = "Box_Mesh_345357280_002-mesh";
     CHECK(value.compare(comparison) == 0);
     reader.closeCurrentFile();
-}
+}//
 
