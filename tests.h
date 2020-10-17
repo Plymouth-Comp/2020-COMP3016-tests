@@ -58,7 +58,7 @@ TEST_CASE("6: Opening and Reading a large DAE File and trying to load too many l
     CHECK(reader.getLines(0, 300).size() > 0); //going beyond the length of the file on purpose
     std::vector<std::string> lines = reader.getLines(0, 300);
 
-    CHECK(lines.size() == 202);
+    CHECK(lines.size() == 203);
     reader.closeCurrentFile();
 }
 
