@@ -5,7 +5,7 @@
 */
 #pragma once 
 #include <string>
-#include "FileReader.h" 
+#include "../FileReader.h" 
 //#define CATCH_CONFIG_MAIN  // This tells Catch to provide a main() - only do this in one cpp file
 #define DOCTEST_CONFIG_IMPLEMENT
 #include "doctest.h"
