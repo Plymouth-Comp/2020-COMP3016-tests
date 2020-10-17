@@ -11,31 +11,31 @@
 #include "doctest.h"
 
 
-TEST_CASE( "1: Creating a FileReader object"  ) {
+TEST_CASE( "STD 1: Creating a FileReader object"  ) {
     FileReader reader = FileReader();
     
     CHECK(reader.currentFile().empty());
 }
 
-TEST_CASE( "2: Opening File from data folder"  ) {
+TEST_CASE( "STD 2: Opening File from data folder"  ) {
     FileReader reader = FileReader();
 
     CHECK( reader.openFile("data/simple.dae") == true );
 }
 
-TEST_CASE("3: Closing File from data folder" ) {
+TEST_CASE("STD 3: Closing File from data folder" ) {
     FileReader reader = FileReader();
 
     CHECK(reader.closeFile("data/simple.dae") == true);
 }
 
-TEST_CASE("4: Closing currently open File" ) {
+TEST_CASE("STD 4: Closing currently open File" ) {
     FileReader reader = FileReader();
 
     CHECK(reader.closeCurrentFile() == true);
 }
 
-TEST_CASE("5: Opening and Reading a simple DAE File") {
+TEST_CASE("STD 5: Opening and Reading a simple DAE File") {
     FileReader reader = FileReader();
     std::string fileName = "data/simple.dae";
     CHECK(reader.openFile(fileName) == true);
@@ -48,7 +48,7 @@ TEST_CASE("5: Opening and Reading a simple DAE File") {
     reader.closeCurrentFile();
 }
 
-TEST_CASE("6: Opening and Reading a large DAE File and trying to load too many lines.") {
+TEST_CASE("STD 6: Opening and Reading a large DAE File and trying to load too many lines.") {
     FileReader reader = FileReader();
     std::string fileName = "data/large.dae";
     CHECK(reader.openFile(fileName) == true);
@@ -62,7 +62,7 @@ TEST_CASE("6: Opening and Reading a large DAE File and trying to load too many l
     reader.closeCurrentFile();
 }
 
-TEST_CASE("7: Trying to get a node from a simple dae file") {
+TEST_CASE("STD 7: Trying to get a node from a simple dae file") {
     FileReader reader = FileReader();
     std::string fileName = "data/simple.dae";
     CHECK(reader.openFile(fileName) == true);
@@ -75,7 +75,7 @@ TEST_CASE("7: Trying to get a node from a simple dae file") {
     reader.closeCurrentFile();
 }
 
-TEST_CASE("8: Trying to get a node and subnode from a simple dae file") {
+TEST_CASE("STD 8: Trying to get a node and subnode from a simple dae file") {
     FileReader reader = FileReader();
     std::string fileName = "data/simple.dae";
     CHECK(reader.openFile(fileName) == true);
@@ -89,7 +89,7 @@ TEST_CASE("8: Trying to get a node and subnode from a simple dae file") {
 }
 
 
-TEST_CASE("9: Trying to get a node attribute from a simple dae file") {
+TEST_CASE("STD 9: Trying to get a node attribute from a simple dae file") {
     FileReader reader = FileReader();
     std::string fileName = "data/simple.dae";
     CHECK(reader.openFile(fileName) == true);
@@ -103,7 +103,7 @@ TEST_CASE("9: Trying to get a node attribute from a simple dae file") {
     reader.closeCurrentFile();
 }
 
-TEST_CASE("10: Trying to get a node attribute from a simple dae file") {
+TEST_CASE("STD 10: Trying to get a node attribute from a simple dae file") {
     FileReader reader = FileReader();
     std::string fileName = "data/simple.dae";
     CHECK(reader.openFile(fileName) == true);
@@ -115,5 +115,5 @@ TEST_CASE("10: Trying to get a node attribute from a simple dae file") {
     comparison = "Box_Mesh_345357280_002-mesh";
     CHECK(value.compare(comparison) == 0);
     reader.closeCurrentFile();
-}//
+}
 
