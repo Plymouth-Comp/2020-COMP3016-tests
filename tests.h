@@ -68,7 +68,7 @@ TEST_CASE("STD 7: Trying to get a node from a simple dae file") {
     CHECK(reader.openFile(fileName) == true);
     
     std::vector<std::string> lines = reader.inspectForFirst("geometry");
-    std::string comparison = "<geometry id=\"Box_Mesh_345357280_002 - mesh\" name=\"Box_Mesh_345357280.002\">";
+    std::string comparison = "<geometry id=\"Box_Mesh_345357280_002-mesh\" name=\"Box_Mesh_345357280.002\">";
     CHECK(lines[0].compare(comparison)==0); //going beyond the length of the file on purpose
     comparison = "    </source>";
     CHECK(lines[30].compare(comparison) == 0);
@@ -81,9 +81,9 @@ TEST_CASE("STD 8: Trying to get a node and subnode from a simple dae file") {
     CHECK(reader.openFile(fileName) == true);
 
     std::vector<std::string> lines = reader.inspectForFirst("geometry","triangles");
-    std::string comparison = "<triangles material=\"Material_004 - material\" count=\"12\">";
+    std::string comparison = "<triangles material=\"Material_004-material\" count=\"12\">";
     CHECK(lines[0].compare(comparison) == 0); //going beyond the length of the file on purpose
-    comparison = "  <input semantic=\"NORMAL\" source=\"#Box_Mesh_345357280_002 - mesh - normals\" offset=\"1\"/>";
+    comparison = "  <input semantic=\"NORMAL\" source=\"#Box_Mesh_345357280_002-mesh-normals\" offset=\"1\"/>";
     CHECK(lines[2].compare(comparison) == 0);
     reader.closeCurrentFile();
 }
@@ -108,11 +108,11 @@ TEST_CASE("STD 10: Trying to get a node attribute from a simple dae file") {
     std::string fileName = "data/simple.dae";
     CHECK(reader.openFile(fileName) == true);
 
-    std::string value = reader.inspectForFirstAttribute("geometry", "name");
-    std::string comparison = "Box_Mesh_345357280.002";
+    std::string value = reader.inspectForFirstAttribute("instance_geometry", "url");
+    std::string comparison = "#Box_Mesh_345357280_002-mesh";
     CHECK(value.compare(comparison) == 0); //going beyond the length of the file on purpose
-    value = reader.inspectForFirstAttribute("geometry", "id");
-    comparison = "Box_Mesh_345357280_002-mesh";
+    value = reader.inspectForFirstAttribute("instance_geometry", "name");
+    comparison = "Box_Mesh_345357280.002";
     CHECK(value.compare(comparison) == 0);
     reader.closeCurrentFile();
 }
