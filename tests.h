@@ -44,7 +44,7 @@ TEST_CASE("STD 5: Opening and Reading a simple DAE File") {
     CHECK(checkName.compare(checkName.size() - fileName.size(), fileName.size(), fileName) == 0);
     std::vector<std::string> lines = reader.getLines(0, 187);
     
-    CHECK(lines.size() == 187);
+    CHECK(lines.size() == 188);
     reader.closeCurrentFile();
 }
 
