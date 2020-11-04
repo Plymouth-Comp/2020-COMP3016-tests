@@ -25,20 +25,20 @@ TEST_CASE( "STD 2: Opening File from data folder"  ) {
 
 TEST_CASE("STD 3: Closing File from data folder" ) {
     FileReader reader = FileReader();
-
+    reader.openFile("data/simple.dae");
     CHECK(reader.closeFile("data/simple.dae") == true);
 }
 
 TEST_CASE("STD 4: Closing currently open File" ) {
     FileReader reader = FileReader();
-
+    reader.openFile("data/simple.dae");
     CHECK(reader.closeCurrentFile() == true);
 }
 
 TEST_CASE("STD 5: Opening and Reading a simple DAE File") {
     FileReader reader = FileReader();
     std::string fileName = "data/simple.dae";
-    CHECK(reader.openFile(fileName) == true);
+    reader.openFile(fileName);
     std::string checkName = reader.currentFile();
   
     CHECK(checkName.compare(checkName.size() - fileName.size(), fileName.size(), fileName) == 0);
@@ -103,6 +103,7 @@ TEST_CASE("STD 9: Trying to get a node attribute from a simple dae file") {
     reader.closeCurrentFile();
 }
 
+
 TEST_CASE("STD 10: Trying to get a node attribute from a simple dae file") {
     FileReader reader = FileReader();
     std::string fileName = "data/simple.dae";
@@ -115,5 +116,17 @@ TEST_CASE("STD 10: Trying to get a node attribute from a simple dae file") {
     comparison = "Box_Mesh_345357280.002";
     CHECK(value.compare(comparison) == 0);
     reader.closeCurrentFile();
+}
+
+TEST_CASE("STD 11: Opening an invalid File from data folder") {
+    FileReader reader = FileReader();
+
+    CHECK(reader.openFile("data/simples.dae") == false);
+}
+
+TEST_CASE("ADV 1: Trying to get a web-resource") {
+    FileReader reader = FileReader();
+    std::string fileName = "https://swen.fairrats.eu/research/webby.dae";
+    CHECK(reader.openFile(fileName) == true);
 }
 
