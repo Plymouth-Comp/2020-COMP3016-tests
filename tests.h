@@ -69,6 +69,7 @@ TEST_CASE("STD 7: Trying to get a node from a simple dae file") {
     
     std::vector<std::string> lines = reader.inspectForFirst("geometry");
     std::string comparison = "<geometry id=\"Box_Mesh_345357280_002-mesh\" name=\"Box_Mesh_345357280.002\">";
+    REQUIRE(lines.size() > 1);
     CHECK(lines[0].compare(comparison)==0); //going beyond the length of the file on purpose
     comparison = "    </source>";
     CHECK(lines[30].compare(comparison) == 0);
@@ -81,6 +82,7 @@ TEST_CASE("STD 8: Trying to get a node and subnode from a simple dae file") {
     CHECK(reader.openFile(fileName) == true);
 
     std::vector<std::string> lines = reader.inspectForFirst("geometry","triangles");
+    REQUIRE(lines.size() > 1);
     std::string comparison = "<triangles material=\"Material_004-material\" count=\"12\">";
     CHECK(lines[0].compare(comparison) == 0); //going beyond the length of the file on purpose
     comparison = "  <input semantic=\"NORMAL\" source=\"#Box_Mesh_345357280_002-mesh-normals\" offset=\"1\"/>";
@@ -120,8 +122,18 @@ TEST_CASE("STD 10: Trying to get a node attribute from a simple dae file") {
 
 TEST_CASE("STD 11: Opening an invalid File from data folder") {
     FileReader reader = FileReader();
-
+    //wrong file name supplied
     CHECK(reader.openFile("data/simples.dae") == false);
+}
+
+TEST_CASE("STD 12: Checking repeated Operations") {
+    FileReader reader = FileReader();
+
+    reader.openFile("data/simple.dae");
+    CHECK(reader.readFile("data/simple.dae") == true);
+    reader.closeFile("data/simple.dae");
+    CHECK(reader.currentFile().empty());
+    CHECK(reader.getLines(0, 1).size() == 0);
 }
 
 TEST_CASE("ADV 1: Trying to get a web-resource") {
@@ -129,4 +141,3 @@ TEST_CASE("ADV 1: Trying to get a web-resource") {
     std::string fileName = "https://swen.fairrats.eu/research/webby.dae";
     CHECK(reader.openFile(fileName) == true);
 }
-
