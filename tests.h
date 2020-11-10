@@ -167,6 +167,7 @@ TEST_CASE("STD 13: Multiple Files Can be Loaded and Inspected for their Elements
     CHECK(reader.readFile("data/simple.dae") == false);
     CHECK(reader.currentFile().compare("data/advanced.dae") == 0);
     CHECK(reader.getLines(0, 10).size() == 11);
+    reader.closeCurrentFile();
 }
 
 TEST_CASE("STD 14: Checking Large File") {
@@ -183,15 +184,7 @@ TEST_CASE("STD 14: Checking Large File") {
 
 
 
-TEST_CASE("ADV 1: Trying to get a web-resource") {
-    FileReader reader = FileReader();
-    std::string fileName = "https://swen.fairrats.eu/research/webby.dae";
-    CHECK(reader.openFile(fileName) == true);
-    CHECK(reader.readFile(fileName) == true);
-
-
-}
-TEST_CASE("ADV 2: Checking repeated Operations 2") {
+TEST_CASE("ADV 1: Checking repeated Operations 2") {
     FileReader reader = FileReader();
 
     reader.openFile("data/simple.dae");
@@ -202,18 +195,22 @@ TEST_CASE("ADV 2: Checking repeated Operations 2") {
     CHECK(reader.openFile("data/simple.dae") == false);
     CHECK(reader.currentFile().compare("data/simple.dae") == 0);
     CHECK(reader.getLines(0, 187)[100].compare("            </index_of_refraction>") == 0);//FIXIT!
+    CHECK(reader.closeCurrentFile());
+    CHECK(reader.closeCurrentFile() == false);
 }
 
-TEST_CASE("ADV 3: Checking repeated Operations 3") {
+TEST_CASE("ADV 2: Checking repeated Operations 3") {
     FileReader reader = FileReader();
 
     reader.openFile("data/simple.dae");
     CHECK(reader.openFile("data/advanced.dae") == true);
     CHECK(reader.currentFile().compare("data/advanced.dae") == 0);
     CHECK(reader.getLines(0, 1).size() > 0);
+    CHECK(reader.closeCurrentFile());
+    CHECK(reader.closeCurrentFile());
 }
 
-TEST_CASE("ADV 4: Checking repeated Operations 4") {
+TEST_CASE("ADV 3: Checking repeated Operations 4") {
     FileReader reader = FileReader();
 
     reader.openFile("data/simple.dae");
@@ -221,9 +218,11 @@ TEST_CASE("ADV 4: Checking repeated Operations 4") {
     CHECK(reader.closeFile("data/simple.dae"));
     CHECK(reader.currentFile().compare("data/advanced.dae") == 0);
     CHECK(reader.getLines(0, 1).size() > 0);
+    CHECK(reader.closeCurrentFile());
+    CHECK(reader.currentFile().empty());
 }
 
-TEST_CASE("ADV 5: Checking repeated Operations 5") {
+TEST_CASE("ADV 4: Checking repeated Operations 5") {
     FileReader reader = FileReader();
 
     reader.openFile("data/simple.dae");
@@ -231,17 +230,41 @@ TEST_CASE("ADV 5: Checking repeated Operations 5") {
     CHECK(reader.closeFile("data/advanced.dae"));
     CHECK(reader.currentFile().compare("data/simple.dae") == 0);
     CHECK(reader.getLines(0, 1).size() > 0);
+    CHECK(reader.closeCurrentFile());
+    CHECK(reader.currentFile().empty());
 }
+
+
+TEST_CASE("ADV 5: Trying to get a web-resource") {
+    FileReader reader = FileReader();
+    std::string fileName = "http://swen.fairrats.eu/research/webby.dae";
+    CHECK(reader.openFile(fileName) == true);
+    CHECK(reader.readFile(fileName) == true);
+    std::vector<std::string> lines = reader.inspectForFirst("geometry", "mesh");
+    REQUIRE(lines.size() > 1);
+    std::string comparison = "      <accessor source= count=\"6\" stride=\"3\">";
+    CHECK(lines[0].compare(comparison) == 0); //going beyond the length of the file on purpose
+    CHECK(reader.closeCurrentFile());
+}
+
+TEST_CASE("ADV 6: Loading Irregular file") {
+    FileReader reader = FileReader();
+    std::string fileName = "http://swen.fairrats.eu/research/corrupt.dae";
+    CHECK(reader.openFile(fileName) == true);
+    CHECK(reader.getLines(0, 187)[100].compare("            </index_of_refraction>") == 0);//FIXIT!
+    CHECK(reader.closeCurrentFile());
+}
+
 
 /*
 * The specific content check in this method will be potentiall be
 * updated a day before the deadline. But the calls will all stay the same.
 */
-TEST_CASE("ADV 6: Trying to get a web-resource") {
+TEST_CASE("ADV 7: Trying to get a web-resource") {
     FileReader reader = FileReader();
 
 
-    std::string urlFile = "https://swen.fairrats.eu/research/webby.dae";
+    std::string urlFile = "http://swen.fairrats.eu/research/webby.dae";
     CHECK(reader.openFile(urlFile) == true);
     CHECK(reader.readFile(urlFile) == true);
 
@@ -273,5 +296,6 @@ TEST_CASE("ADV 6: Trying to get a web-resource") {
     CHECK(reader.currentFile().compare("data/advanced.dae") == 0);
 
     CHECK(reader.getLines(0, 10).size() == 11);
-
+    CHECK(reader.closeCurrentFile());
+    CHECK(reader.currentFile().empty());
 }
