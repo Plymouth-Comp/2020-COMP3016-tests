@@ -242,8 +242,8 @@ TEST_CASE("ADV 5: Trying to get a web-resource") {
     CHECK(reader.readFile(fileName) == true);
     std::vector<std::string> lines = reader.inspectForFirst("geometry", "mesh");
     REQUIRE(lines.size() > 1);
-    std::string comparison = "      <accessor source= count=\"6\" stride=\"3\">";
-    CHECK(lines[0].compare(comparison) == 0); //going beyond the length of the file on purpose
+    std::string comparison = "      <accessor source=\"#Creeper-mesh-positions-array\" count=\"8\" stride=\"3\">";
+    CHECK(lines[0].compare(comparison) == 0);
     CHECK(reader.closeCurrentFile());
 }
 
@@ -251,7 +251,7 @@ TEST_CASE("ADV 6: Loading Irregular file") {
     FileReader reader = FileReader();
     std::string fileName = "http://swen.fairrats.eu/research/corrupt.dae";
     CHECK(reader.openFile(fileName) == true);
-    CHECK(reader.getLines(0, 187)[100].compare("            </index_of_refraction>") == 0);//FIXIT!
+    CHECK(reader.getLines(0, 187)[49].compare("            </index_of_refraction>") == 0);
     CHECK(reader.closeCurrentFile());
 }
 
