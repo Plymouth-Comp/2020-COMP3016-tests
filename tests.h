@@ -242,8 +242,8 @@ TEST_CASE("ADV 5: Trying to get a web-resource") {
     CHECK(reader.readFile(fileName) == true);
     std::vector<std::string> lines = reader.inspectForFirst("geometry", "mesh");
     REQUIRE(lines.size() > 1);
-    std::string comparison = "      <accessor source=\"#Creeper-mesh-positions-array\" count=\"8\" stride=\"3\">";
-    CHECK(lines[0].compare(comparison) == 0);
+    std::string comparison = "  <source id=\"Creeper-mesh-positions\">";
+    CHECK(lines[1].compare(comparison) == 0);
     CHECK(reader.closeCurrentFile());
 }
 
