@@ -251,6 +251,7 @@ TEST_CASE("ADV 6: Loading Irregular file") {
     FileReader reader = FileReader();
     std::string fileName = "http://swen.fairrats.eu/research/corrupt.dae";
     CHECK(reader.openFile(fileName) == true);
+    REQUIRE(reader.getLines(0, 187).size() > 1);
     CHECK(reader.getLines(0, 187)[49].compare("        </technique>") == 0);
     CHECK(reader.closeCurrentFile());
 }
